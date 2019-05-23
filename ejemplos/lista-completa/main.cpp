@@ -22,7 +22,7 @@ int main()
 
     cout << "--------------" << endl;
 
-    list.stoneSort();
+    list.newOrder();
 
     cout << list << endl;
 

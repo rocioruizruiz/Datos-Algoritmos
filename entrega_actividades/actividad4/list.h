@@ -28,15 +28,16 @@ public:
     void setSize(unsigned int value);
 
     void moveUp(Node *n);
-    void moveDown(Node *n);
 
     void bubbleSort();
-    void stoneSort();
-    void newOrder();
+
+    Node* search(int value);
+    Node* searchb(int value, Node* Frst, Node* Lst, int sizee);
+    Node* getMiddle(int size, Node *Frst);
 
 private:
     Node* first;
-    Node* last;
+    Node *last;
     unsigned int size;
 };
 

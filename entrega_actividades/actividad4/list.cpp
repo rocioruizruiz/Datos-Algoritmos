@@ -5,9 +5,7 @@ List::List():
     last{nullptr},
     size{0}
 {
-
 }
-
 List::~List()
 {
     delete first;
@@ -96,7 +94,6 @@ void List::moveUp(Node *n)
 {
     //node is already the first one, cannot be moved up
     if(n == first) return;
-
     //node is the last one
     if(n == last){
         if(n->getPrev() == first){ // Prev node is first. There are only 2 nodes
@@ -113,10 +110,8 @@ void List::moveUp(Node *n)
             last->setPrev(n);
             last->setNext(nullptr);
             n->setNext(last);
-
         }
     }
-
     if(n != last){
         if(n->getPrev() != first){
             Node* aux1 = n->getPrev()->getPrev();
@@ -138,131 +133,70 @@ void List::moveUp(Node *n)
         }
     }
 }
-void List::moveDown(Node *n) {
-    //node is already the first one, cannot be moved up
-    if(n == last) return;
-    
-    //node is the last one
-    if(n == first){
-        if(n->getNext() == last){ // Prev node is first. There are only 2 nodes
-            last = n;
-            first = n->getNext();
-            n->setNext(nullptr);
-            first->setPrev(nullptr);
-            last->setPrev(first);
-            first->setNext(last);
-        }else{
-            first = n->getNext();
-            n->setNext(first->getNext());
-            first->getNext()->setPrev(n);
-            first->setNext(n);
-            first->setPrev(nullptr);
-            n->setPrev(first);
-            
-        }
-    }
-    
-    if(n != first){
-        if(n->getNext() != last){
-            Node* aux1 = n->getNext()->getNext();
-            Node* aux2 = n->getPrev();
-            n->getNext()->setPrev(aux2);
-            aux2->setNext(n->getNext());
-            aux1->setPrev(n);
-            n->setNext(aux1);
-            n->setPrev(aux2->getNext());
-            n->getPrev()->setNext(n);
-        }else{
-            Node* aux = n->getPrev();
-            last->setPrev(aux);
-            aux->setNext(last);
-            n->setPrev(last);
-            n->setNext(nullptr);
-            last->setNext(n);
-            last = n;
-        }
-    }
-}
-
 
 void List::bubbleSort()
 {
     Node* it = first;
-
     while(it != nullptr){
-
         if(it == first){
             it = it->getNext();
             continue;
         }
-
         // if current node is smaller than previous
-
-        Node* bubble = it;
+        Node* current = it;
         Node* prev = it->getPrev();
-        if( * bubble < *prev){
+        if( *current < *prev){
            moveUp(it);
            continue;
         }
-
         it = it->getNext();
     }
 }
 
-void List::stoneSort()
+Node *List::search(int value)
 {
-    Node* it = last;
-    while(it != nullptr){
-        if(it == last){
-            it = it->getPrev();
-            continue;
-        }
-        Node* stone = it;
-        Node* next = it->getNext();
-        if(*stone > *next){
-            moveDown(it);
-            continue;
-        }
-        it = it->getPrev();
-    }
-}
-void List::newOrder()
-{
-    Node* it = first;
-    Node* aux;
-    while(it != last){
-        Node* it2 = it;
-        aux= it2;
-        for(it2; it2 != last; it2 = it2->getNext()){
-            if (it2->getData()->getValue() > aux->getData()->getValue()) aux = it2;
-        }
-        if(aux){
-            // move_before(aux, it);
-            if(aux->getNext()){
-                aux->getPrev()->setNext(aux->getNext());
-            }else{
-                aux->getPrev()->setNext(nullptr);
-            }
-            aux->getNext()->setPrev(aux->getPrev());
-            aux->setPrev(it);
-            aux->setNext(it->getNext());
-            it->setNext(aux);
-        }
-        it = aux->getNext();
-    }
+    return this->getFirst()->search(value);
 }
 
+Node *List::searchb(int value, Node *Frst, Node *Lst, int sizee)
+{
+    if(value == Frst->getData()->getValue()){
+        return Frst;
+    }
+    if(value == Lst->getData()->getValue()){
+        return Lst;
+    }
+    Node* middle = getMiddle(sizee,Frst );
+    if(value == middle->getData()->getValue()){
+        return middle;
+    }
+    Node* newFirst, *newLast;
+    if(value < middle->getData()->getValue()){
+        newFirst = Frst;
+        newLast = middle;
+        sizee = sizee/2;
+        return searchb(value, newFirst, newLast, sizee);
+        }else{
+        newFirst = middle;
+        newLast = last;
+        sizee = sizee/2;
+        return searchb(value, newFirst, newLast, sizee);
+    }
 
+}
 
-
-
+Node *List::getMiddle(int size, Node *Frst)
+{
+    Node* it = Frst;
+    for(int i=0; i < size/2 ; i++, it=it->getNext()){
+    }
+    return it;
+}
 
 ostream & operator<<(ostream &os, const List &l)
 {
     for(Node* it = l.getFirst(); it != nullptr; it = it->getNext()){
         os << it->getData()->getValue() << " - ";
     }
-
     return os;
-
 }
