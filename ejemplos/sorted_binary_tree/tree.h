@@ -2,18 +2,21 @@
 #define TREE_H
 
 #include "node.h"
-#include "data.h"
+using namespace std;
+#include <vector>
+
 
 class Tree
 {
 public:
     Tree();
     void push(Data *d);
-    Node* search(Data const & d);
+    Node* search(Node* n);
 
     Node *getFirst() const;
     void depthFirstRun() const;
     void breadthFirstRun() const;
+    void erase(Node* n) ;
 
 
 protected:

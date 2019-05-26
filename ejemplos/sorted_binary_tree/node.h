@@ -23,6 +23,8 @@ public:
     Node *getRight() const;
 
     void depthFirstRun() const;
+    void breadthFirstRun();
+    void erase(Node* n);
     void printLevel(int setHeight) const;
 
 protected:

@@ -1,5 +1,6 @@
 #include "node.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ Node::Node(Data *d):
 
 void Node::push(Node *n)
 {
-    if( *n > *this){
+    if( n->getData()->getValue() > this->getData()->getValue()){
         if(right)
             right->push(n);
         else{
@@ -59,6 +60,34 @@ Data *Node::getData() const
 {
     return data;
 }
+
+void Node::breadthFirstRun() {
+    vector<Node*> queue;
+    queue.push_back(this);
+    cout << this->getData()->getValue() << endl;
+    for(int i{0}; i < queue.size(); i++){
+        if(queue.at(i)->left) {queue.push_back(queue.at(i)->left);
+            cout << "Izquierda:    " << queue.at(i)->left->getData()->getValue() << endl;}
+        if(queue.at(i)->right){ queue.push_back(queue.at(i)->right);
+            cout << "Derecha:    " << queue.at(i)->right->getData()->getValue() << endl;}
+    }
+    cout << "Arbol recorrido" << endl;
+}
+void Node::erase(Node *found){
+    Node* arriba = found->parent;
+    Node* der = found->right;
+    Node* izq = found->left;
+    if (found->getData()->getValue() == arriba->left->getData()->getValue()) arriba->left = nullptr;
+    if (found->getData()->getValue() == arriba->getRight()->getData()->getValue()) arriba->right = nullptr;
+    found->right = nullptr;
+    found->left = nullptr;
+    found->parent = nullptr;
+    delete found;
+    
+    if(der) push(der);
+    if(izq) push(izq);
+}
+
 
 bool operator ==(const Node &n1, const Node &n2)
 {
